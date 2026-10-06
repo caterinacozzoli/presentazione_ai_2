@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuale di Sopravvivenza all'AI · S1</title>
+    <style>
+        :root {
+            --bg:#f4f1ea;--ink:#1a1a1a;
+            --magenta:#e800e8;--cyan:#00cfcf;--yellow:#ffe500;
+            --lime:#b6ff3a;--coral:#ff6b6b;--violet:#7b61ff;
+            --border:3px solid var(--ink);
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{background:var(--bg);color:var(--ink);font-family:'Courier New',Courier,monospace;line-height:1.65;overflow-x:hidden}
+        .wrap{max-width:920px;margin:0 auto;padding:16px}
+
+        /* ── PAGE ── */
+        .pg{display:none;border:var(--border);background:#fff;padding:28px 30px;margin-bottom:22px;box-shadow:8px 8px 0 var(--ink);position:relative}
+        .pg.on{display:block;animation:pop .3s ease-out}
+        @keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+        /* ── TYPO ── */
+        h1{font-family:'Arial Black',Impact,sans-serif;font-size:clamp(2rem,6vw,3.4rem);text-transform:uppercase;letter-spacing:-2px;line-height:1.05;margin-bottom:16px;background:var(--magenta);color:#fff;display:inline-block;padding:6px 16px;border:var(--border);transform:rotate(-1.5deg)}
+        h2{font-family:'Arial Black',sans-serif;font-size:1.6rem;display:inline-block;padding:4px 10px;border:var(--border);margin:16px 0}
+        h3{font-family:'Arial Black',sans-serif;font-size:1.1rem;margin:12px 0 6px}
+        .strillo{font-size:1.1rem;font-weight:bold;background:var(--yellow);padding:10px 12px;border:var(--border);margin-bottom:16px}
+        .pgn{float:right;font-weight:bold;font-size:2rem;color:#ccc;font-family:'Arial Black',sans-serif}
+
+        /* ── QUIZ (solo testo, segna su carta) ── */
+        .qi{font-family:sans-serif;font-size:1.02rem;margin-bottom:18px;padding:12px;background:#fdf8e8;border:2px dashed var(--ink)}
+        .qb{border:var(--border);padding:16px 18px;margin:14px 0;background:#fafafa}
+        .qb .qn{font-family:'Arial Black',sans-serif;font-size:1.4rem;float:left;margin-right:12px;background:var(--magenta);color:#fff;width:36px;height:36px;text-align:center;line-height:36px;border-radius:50%}
+        .qb .qt{font-weight:bold;font-size:1.05rem;margin-bottom:10px;overflow:hidden}
+        .qb .qo{display:block;padding:5px 0 5px 26px;font-family:sans-serif;position:relative;font-size:.97rem}
+        .qb .qo::before{content:'○';position:absolute;left:6px;top:5px;font-size:1.05rem}
+
+        /* ── ARCHETIPI GRID ── */
+        .ag{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+        @media(max-width:640px){.ag{grid-template-columns:1fr}}
+        .ac{border:var(--border);padding:16px;position:relative;overflow:hidden}
+        .ac .badge{position:absolute;top:0;right:0;font-family:'Arial Black',sans-serif;font-size:.8rem;padding:3px 10px;color:#fff}
+        .ac h3{margin-top:0}
+        .ac .combo{font-family:monospace;font-size:.9rem;background:#eee;padding:3px 7px;display:inline-block;margin:3px 2px;border:1px solid #ccc}
+        .ac .oroscopo{font-style:italic;margin-top:8px;padding:8px;border-left:4px solid var(--ink);background:#fafafa;font-size:.92rem}
+        .ac .fust{display:inline-block;margin-top:8px;font-weight:bold;font-family:'Arial Black',sans-serif;text-decoration:none;color:var(--ink);border-bottom:3px solid var(--magenta);font-size:.95rem;cursor:pointer}
+
+        /* ── REDDIT CARD ── */
+        .rc{border:2px solid var(--ink);background:#fff;padding:14px;margin:16px 0;border-radius:8px;box-shadow:3px 3px 0 #ccc}
+        .rc .rh{font-size:.76rem;color:#666;margin-bottom:6px;font-family:sans-serif}
+        .rc .rt{font-weight:bold;font-size:1.02rem;font-family:sans-serif}
+
+        /* ── EMBED / FUSTELLA / FONTE ── */
+        .emb{border:2px dashed #888;background:#eee;padding:26px;text-align:center;margin:16px 0;font-style:italic;font-family:sans-serif;font-size:.93rem}
+        .btn{display:inline-block;padding:10px 20px;background:var(--ink);color:#fff;text-decoration:none;font-weight:bold;border:none;cursor:pointer;text-transform:uppercase;font-family:'Arial Black',sans-serif;float:right;margin-top:16px;font-size:.9rem}
+        .btn:hover{background:var(--magenta)}
+        .btn.bk{background:#bbb;color:var(--ink);margin-right:10px}
+        .btn.bk:hover{background:#999;color:#fff}
+        .fl{display:block;text-align:right;font-size:.76rem;color:#888;text-decoration:underline;margin-top:12px}
+        .clr{clear:both}
+
+        /* ── ASCII ── */
+        .aa{white-space:pre;font-size:.62rem;line-height:1.12;overflow-x:hidden;color:#777;margin:14px 0}
+
+        /* ── WARN ── */
+        .warn{color:#c00;font-weight:bold;border:2px solid #c00;padding:10px;margin:12px 0}
+
+        /* ── LIVE TOKENIZER ── */
+        .live-tok{background:#1e1e1e;color:#fff;border:var(--border);padding:20px;text-align:left;border-radius:8px;margin:15px 0}
+        .live-tok textarea{width:100%;height:100px;background:#333;color:var(--lime);border:2px solid #555;padding:10px;font-family:monospace;font-size:1rem;resize:vertical;margin-top:10px}
+        .tok-count{font-family:'Arial Black',sans-serif;font-size:3rem;color:var(--cyan);text-align:right;line-height:1}
+        .tok-label{text-align:right;font-size:.8rem;color:#888;text-transform:uppercase}
+
+        /* ── MATTONE TIMER ── */
+        .timer-box{text-align:center;margin:20px 0;padding:30px;background:var(--ink);color:#fff;border:var(--border)}
+        .timer-display{font-family:'Arial Black',sans-serif;font-size:clamp(3rem,10vw,6rem);color:var(--yellow);margin:10px 0}
+        .timer-label{font-size:1.1rem;color:var(--cyan)}
+        .timer-btn{padding:12px 30px;font-size:1.1rem;font-family:'Arial Black',sans-serif;border:3px solid #fff;background:transparent;color:#fff;cursor:pointer;text-transform:uppercase;margin:8px 4px;transition:all .2s}
+        .timer-btn:hover{background:var(--magenta);border-color:var(--magenta)}
+        .timer-btn.active{background:var(--coral);border-color:var(--coral)}
+
+        /* ── ESERCIZIO PROMPT / PRIMA E DOPO ── */
+        .ex-box{background:#fff;border:var(--border);margin:16px 0}
+        .ex-header{background:var(--ink);color:#fff;padding:8px 12px;font-weight:bold;font-family:sans-serif;font-size:.9rem;text-transform:uppercase}
+        .ex-body{padding:16px;font-size:1rem;font-family:sans-serif}
+        .hl-cont{background:#e0f7fa;border-bottom:2px solid var(--cyan);font-weight:bold}
+        .hl-task{background:#f3e5f5;border-bottom:2px solid var(--magenta);font-weight:bold}
+        .hl-inst{background:#f1f8e9;border-bottom:2px solid var(--lime);font-weight:bold}
+        .hl-incl{background:var(--yellow);padding:2px 4px;font-weight:bold}
+
+        .pd-grid{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;text-align:center;margin:16px 0}
+        .pd-col{flex:1;min-width:220px}
+        .pd-img{background:#ddd;border:var(--border);padding:50px 16px;margin-bottom:8px;font-size:.9rem;color:#555}
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+
+<!-- ════════════════════════════════════════════
+     PAG 0 — COPERTINA + QUIZ (5 domande, su carta)
+     ════════════════════════════════════════════ -->
+<div id="p0" class="pg on">
+<div class="aa">
+ ╔══════════════════════════════════════════════════╗
+ ║  M A N U A L E  d i  S O P R A V V I V E N Z A ║
+ ║              a l l ' A I  ·  S 1                ║
+ ╚══════════════════════════════════════════════════╝
+</div>
+
+<h1>Manuale di Sopravvivenza all'AI</h1>
+<div class="strillo">Come non farsi sostituire, non farsi truffare e non litigare con un chatbot.</div>
+
+<h2 style="background:var(--magenta)">✎ TEST: Che tipo di AI sei?</h2>
+
+<div class="qi">
+    ✏️ <strong>Prendi carta e penna</strong> (o le Note del telefono).<br>
+    Per ogni domanda segna la lettera che ti rappresenta: <strong>A, B, C o D</strong>.<br>
+    Alla fine avrai una sequenza tipo <strong>ABCDA</strong>: conta quale lettera hai scelto più spesso.<br>
+    Quella è il tuo archetipo. Scrivila nella chat del meeting!
+</div>
+
+<div class="qb">
+    <div class="qn">1</div>
+    <div class="qt">Quando esce l'ennesima nuova versione di ChatGPT, il tuo primo pensiero è:</div>
+    <span class="qo"><strong>A)</strong> "L'inizio della fine. Ci ruberanno l'acqua e il lavoro."</span>
+    <span class="qo"><strong>B)</strong> "Mah, io scrivo meglio a mano. Passatemi la Bic."</span>
+    <span class="qo"><strong>C)</strong> "L'ho provato ieri, mi ha risposto con un tema delle medie."</span>
+    <span class="qo"><strong>D)</strong> "Bello, ma genera sempre gli stessi CEO bianchi in cravatta."</span>
+</div>
+
+<div class="qb">
+    <div class="qn">2</div>
+    <div class="qt">Come scrivi di solito il tuo "prompt"?</div>
+    <span class="qo"><strong>A)</strong> Non lo scrivo. Ogni parola costa energia e CO₂.</span>
+    <span class="qo"><strong>B)</strong> "Ciao ChatGPT scusa il disturbo per favore potresti aiutarmi? Grazie mille TVB 💕"</span>
+    <span class="qo"><strong>C)</strong> "fammi un testo bello su questa cosa grazie"</span>
+    <span class="qo"><strong>D)</strong> Uso ruoli e vincoli complessi, ma l'output resta stereotipato.</span>
+</div>
+
+<div class="qb">
+    <div class="qn">3</div>
+    <div class="qt">Il collega ti manda un documento Word di 40 pagine e ti chiede di "darlo in pasto all'AI". Tu:</div>
+    <span class="qo"><strong>A)</strong> "Prima dimmi quanta energia consuma processare 40 pagine."</span>
+    <span class="qo"><strong>B)</strong> Lo incollo così com'è, formattato con 17 font diversi. L'AI se la sbrighi.</span>
+    <span class="qo"><strong>C)</strong> Lo incollo e scrivo "riassumi". Poi mi lamento che il riassunto è inutile.</span>
+    <span class="qo"><strong>D)</strong> Lo ristrutturo con heading e bullet, ma l'output è comunque piatto e generico.</span>
+</div>
+
+<div class="qb">
+    <div class="qn">4</div>
+    <div class="qt">Qual è la tua più grande frustrazione con l'AI oggi?</div>
+    <span class="qo"><strong>A)</strong> L'ansia per i server di Sam Altman che si bevono i ghiacciai.</span>
+    <span class="qo"><strong>B)</strong> Che non capisce il mio file e mi restituisce spazzatura.</span>
+    <span class="qo"><strong>C)</strong> Che devo ripetere la stessa richiesta 10 volte e ogni volta è peggio.</span>
+    <span class="qo"><strong>D)</strong> Che le immagini generate sembrano tutte uscite dallo stesso catalogo stock.</span>
+</div>
+
+<div class="qb">
+    <div class="qn">5</div>
+    <div class="qt">Una persona ti dice: "L'AI cambierà tutto." Tu rispondi:</div>
+    <span class="qo"><strong>A)</strong> "Sì, cambierà il clima. In peggio."</span>
+    <span class="qo"><strong>B)</strong> "Io ho la mia penna stilografica e sto benissimo, grazie."</span>
+    <span class="qo"><strong>C)</strong> "Magari, se solo riuscissi a farle fare quello che voglio."</span>
+    <span class="qo"><strong>D)</strong> "Cambierà tutto per chi? Non per tutti, di sicuro."</span>
+</div>
+
+<div style="text-align:center;margin:28px 0 10px;font-size:1.15rem;font-weight:bold;font-family:sans-serif">
+    ✏️ Hai segnato le tue 5 lettere?<br>Conta qual è la più frequente e scrivila nella chat!
+</div>
+
+<button class="btn" onclick="go(1)">Scopri il tuo Archetipo →</button>
+<div class="clr"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAG 1 — ARCHETIPI (l'indice da rivista)
+     ════════════════════════════════════════════ -->
+<div id="p1" class="pg">
+<span class="pgn">★</span>
+<h2 style="background:var(--yellow)">GLI ARCHETIPI · L'Indice</h2>
+<p style="margin-bottom:6px">Trova la tua lettera dominante. Quello è il tuo articolo. Gli altri sono bonus.</p>
+<div class="strillo" style="font-size:.95rem">In caso di parità? Vince l'ultima risposta. Se hai fatto ABCDA sei una Cassandra (l'ultima è A). Se hai fatto AABBC sei un Analogico (B come ultima tra le pari). Semplice.</div>
+
+<div class="ag">
+
+    <!-- A — CASSANDRA -->
+    <div class="ac" style="border-color:var(--lime)">
+        <div class="badge" style="background:var(--lime);color:var(--ink)">MAGGIORANZA DI A</div>
+        <h3>🌿 La Cassandra del Server Farm</h3>
+        <p><strong>Il tuo pregiudizio:</strong> "L'AI prosciuga i fiumi! È un disastro ambientale!"</p>
+        <p style="font-size:.9rem"><strong>Hai ragione?</strong> In parte. Il consumo c'è, ma il modo migliore per inquinare meno è imparare a scrivere prompt efficienti.</p>
+        <div class="oroscopo">
+            <strong>🔮 L'oroscopo consiglia:</strong> "Gli astri vedono troppi token sprecati nel tuo futuro. Salverai il pianeta tagliando gli aggettivi."
+        </div>
+        <p style="margin-top:6px;font-size:.85rem">
+            <span class="combo">AAAAB</span> <span class="combo">AACAA</span> <span class="combo">AABCA</span> → Sei tu.
+        </p>
+        <a class="fust" onclick="go(2)">→ Pagina 2: La Dieta dei Token</a>
+    </div>
+
+    <!-- B — ANALOGICO -->
+    <div class="ac" style="border-color:var(--cyan)">
+        <div class="badge" style="background:var(--cyan);color:var(--ink)">MAGGIORANZA DI B</div>
+        <h3>📠 L'Analogico Diffidente</h3>
+        <p><strong>Il tuo pregiudizio:</strong> "Scrivo meglio io. L'AI non mi serve."</p>
+        <p style="font-size:.9rem"><strong>Hai ragione?</strong> Sì, se gli dai un Word con 17 font. No, se impari la sua lingua nativa.</p>
+        <div class="oroscopo">
+            <strong>🔮 L'oroscopo consiglia:</strong> "La penna stilografica è bellissima, ma l'AI pensa in Markdown. Impara 3 simboli e cambia tutto."
+        </div>
+        <p style="margin-top:6px;font-size:.85rem">
+            <span class="combo">BBBCA</span> <span class="combo">BABBD</span> <span class="combo">BBBAB</span> → Sei tu.
+        </p>
+        <a class="fust" onclick="go(3)">→ Pagina 3: Parla come mangia l'AI</a>
+    </div>
+
+    <!-- C — CI PROVO -->
+    <div class="ac" style="border-color:var(--coral)">
+        <div class="badge" style="background:var(--coral);color:#fff">MAGGIORANZA DI C</div>
+        <h3>🌀 Il "Ci Provo Ma Boh"</h3>
+        <p><strong>Il tuo pregiudizio:</strong> "L'output viene sempre piatto e banale."</p>
+        <p style="font-size:.9rem"><strong>Hai ragione?</strong> Certo. Con un prompt di getto l'output <em>è</em> la fiera dell'ovvio. Ma la colpa non è della macchina.</p>
+        <div class="oroscopo">
+            <strong>🔮 L'oroscopo consiglia:</strong> "Smettila di scrivere 'fammi un testo bello'. L'AI ti dà esattamente la struttura che le dai tu."
+        </div>
+        <p style="margin-top:6px;font-size:.85rem">
+            <span class="combo">CCCBA</span> <span class="combo">CACCC</span> <span class="combo">BCCCD</span> → Sei tu.
+        </p>
+        <a class="fust" onclick="go(4)">→ Pagina 4: L'arte del Prompt Strutturato</a>
+    </div>
+
+    <!-- D — PROMPT BOOMER -->
+    <div class="ac" style="border-color:var(--magenta)">
+        <div class="badge" style="background:var(--magenta);color:#fff">MAGGIORANZA DI D</div>
+        <h3>🧐 Il Prompt Boomer</h3>
+        <p><strong>Il tuo pregiudizio:</strong> "Le immagini AI sono tutte uguali, un catalogo di modelli perfetti e finti."</p>
+        <p style="font-size:.9rem"><strong>Hai ragione?</strong> Sì, i dati di internet sono pieni di stereotipi. Ma tocca a te sovrascriverli.</p>
+        <div class="oroscopo">
+            <strong>🔮 L'oroscopo consiglia:</strong> "Pensi di essere un drago dei prompt, ma gli astri dicono che hai saltato la lezione più importante: i Bias."
+        </div>
+        <p style="margin-top:6px;font-size:.85rem">
+            <span class="combo">DDDCA</span> <span class="combo">CADDD</span> <span class="combo">DDBDD</span> → Sei tu.
+        </p>
+        <a class="fust" onclick="go(5)">→ Pagina 5: Hacking dell'inclusione</a>
+    </div>
+
+</div>
+
+<div style="border-top:2px dashed #ccc;margin-top:16px;padding-top:12px;font-family:sans-serif;font-size:.9rem">
+    <strong>💡 Cheat sheet di sopravvivenza:</strong> L'AI è uno specchio. Riflette esattamente l'impegno, il livello di dettaglio e i pregiudizi che inserisci nel prompt.
+</div>
+
+<button class="btn" onclick="go(2)">Iniziamo → Pagina 2</button>
+<button class="btn bk" onclick="go(0)">← Quiz</button>
+<div class="clr"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAG 2 — CASSANDRA: TOKEN & CONSUMI
+     ════════════════════════════════════════════ -->
+<div id="p2" class="pg">
+<span class="pgn">02</span>
+<h2 style="background:var(--lime)">La Dieta dei Token</h2>
+<p style="font-size:.88rem;color:#888;margin-bottom:10px">Smonta: <em>La Cassandra del Server Farm</em></p>
+
+<div class="rc">
+    <div class="rh">▲ 12.4k · u/EcoGuerriero99 · 3h fa</div>
+    <div class="rt">L'AI consuma un'enormità ed è un disastro ecologico. Io torno alla carta.</div>
+</div>
+
+<p>Il consumo c'è. Una singola query a ChatGPT consuma circa <strong>5–10 volte</strong> l'energia di una normale ricerca Google (dato 2025). Generare immagini costa ancora di più. È un problema sistemico enorme.</p>
+
+<div class="strillo">Sam Altman ha detto che dire "per favore" e "grazie" a ChatGPT costa milioni di dollari al giorno in energia computazionale. Noi continuiamo a farlo perché siamo educati.</div>
+
+<p>L'AI non legge "parole", legge <strong>token</strong>. Parti di parole. Più token inserisci (e più ne chiedi in risposta), più i server consumano energia e acqua per il raffreddamento. Scrivere prompt asciutti ed efficienti non ti rende solo più bravo: ti rende ecologico.</p>
+
+<!-- LIVE TOKENIZER -->
+<div class="live-tok">
+    <h3 style="color:var(--lime);margin-top:0">🔧 LIVE TOKEN ESTIMATOR</h3>
+    <p style="font-size:.9rem;color:#bbb">Prova a incollare un tipico prompt "educato" e prolisso, poi asciugalo tagliando i convenevoli. Guarda cosa succede al contatore.</p>
+    <textarea id="tok-input" onkeyup="countTokens()">Ciao IA, saresti così gentile da scrivermi per favore un bel riassunto completo e dettagliato di questo documento? Ti ringrazio tantissimo in anticipo!</textarea>
+    <div class="tok-count" id="tok-display">35</div>
+    <div class="tok-label">Token stimati usati per elaborare la richiesta</div>
+</div>
+
+<a href="https://iopscience.iop.org/article/10.1088/1748-9326/ae0e3b/pdf" target="_blank" class="fl">Fonte: Harding &amp; Moreno-Cruz, IOPscience, 2025</a>
+
+<button class="btn" onclick="go(3)">Pagina 3 →</button>
+<button class="btn bk" onclick="go(1)">← Archetipi</button>
+<div class="clr"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAG 3 — ANALOGICO: FILE & MARKDOWN
+     ════════════════════════════════════════════ -->
+<div id="p3" class="pg">
+<span class="pgn">03</span>
+<h2 style="background:var(--cyan)">Parla come mangia l'AI</h2>
+<p style="font-size:.88rem;color:#888;margin-bottom:10px">Smonta: <em>L'Analogico Diffidente</em></p>
+
+<div class="rc">
+    <div class="rh">▲ 243 · u/PennaDOC · 5h fa</div>
+    <div class="rt">Gli ho dato un file Word formattato con amore e ha sputato fuori spazzatura.</div>
+</div>
+
+<p>L'AI non "vede" il design grafico del tuo file Word o PDF. Quando le carichi un documento complesso, estrae solo testo piatto, perdendo gerarchie e importanza. L'AI pensa e ragiona in <strong>Markdown</strong>: un formato dove i cancelletti indicano i titoli e gli asterischi il grassetto.</p>
+
+<h3>🧩 Mini-Rebus: che lingua è questa?</h3>
+<div style="background:var(--ink);color:var(--cyan);text-align:left;font-family:'Courier New',monospace;padding:20px 22px;font-size:1rem;line-height:1.75;margin:14px 0;border:var(--border)">
+<span style="color:var(--yellow)"># Il mio progetto</span><br>
+<br>
+Questo è un paragrafo con una parola <span style="color:var(--magenta)">**importante**</span>.<br>
+<br>
+<span style="color:var(--lime)">- Primo punto</span><br>
+<span style="color:var(--lime)">- Secondo punto</span><br>
+<br>
+<span style="color:var(--coral)">> Una citazione che fa pensare.</span><br>
+<br>
+<span style="font-size:.85rem;color:#888">↑ Se scrivete i vostri prompt e testi usando questa sintassi, l'AI vi capirà 10 volte meglio.</span>
+</div>
+
+<div class="warn">⚠️ AVVERTENZA SOPRAVVIVENZA: Esistono ottimi convertitori online da PDF a Markdown, ma NON inseriteci file con dati sensibili aziendali o anagrafiche dei clienti.</div>
+
+<a href="https://medium.com/@erinmcdowell/why-markdown-became-the-working-language-of-ai-5c4be43bf45f" target="_blank" class="fl">Fonte: E. McDowell, Medium — "Why Markdown became the working language of AI"</a>
+
+<button class="btn" onclick="go(4)">Pagina 4 →</button>
+<button class="btn bk" onclick="go(2)">← Token</button>
+<div class="clr"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAG 4 — CI PROVO: PROMPT OPTIMIZATION + TEST DEL MATTONE
+     ════════════════════════════════════════════ -->
+<div id="p4" class="pg">
+<span class="pgn">04</span>
+<h2 style="background:var(--coral);color:#fff">L'arte del Prompt Strutturato</h2>
+<p style="font-size:.88rem;color:#888;margin-bottom:10px">Smonta: <em>Il "Ci Provo Ma Boh"</em></p>
+
+<div class="rc">
+    <div class="rh">▲ 8.9k · u/Generico99 · 1h fa</div>
+    <div class="rt">L'output viene sempre piatto e banale. L'AI sa solo fare frasi fatte.</div>
+</div>
+
+<p>L'AI è un motore probabilistico: per natura, vi darà la risposta più probabile e statisticamente ovvia di internet. Se le date un prompt piatto, riceverete un testo piatto. È uno specchio. Per sbloccare risposte originali, dovete strutturare le intenzioni.</p>
+
+<div class="ex-box">
+    <div class="ex-header">🥊 LA SFIDA: DI GETTO vs STRUTTURATO</div>
+    <div class="ex-body" style="background:#fef0f0; border-bottom:1px solid #ccc">
+        <strong style="color:var(--coral)">❌ PROMPT 1 (Di Getto - Livello Newbie):</strong><br>
+        <em>"Trova un nome per una startup che crea bandiere per nazioni che non esistono."</em><br>
+        <span style="font-size:.85rem;color:#666">Risultato: Nomi banali tipo 'Flagify', 'NonNations', 'BannerX'.</span>
+    </div>
+    <div class="ex-body" style="background:#f0fef0">
+        <strong style="color:var(--lime)">✅ PROMPT 2 (Strutturato - Livello Pro):</strong><br>
+        <span class="hl-cont">CONTESTO:</span> Sei un copywriter con tanti anni di esperienza, perspicace e creativo, specializzato nel trovare nomi per attività fuori dagli schemi.<br><br>
+        <span class="hl-task">TASK:</span> Elabora 5 proposte di naming per una startup che crea bandiere per nazioni che non esistono.<br><br>
+        <span class="hl-inst">ISTRUZIONI:</span> Il nome deve essere d’impatto, breve e iconico. No prefissi tecnologici.
+    </div>
+</div>
+
+<p>Dare alla macchina un Ruolo, un Contesto, un Task e delle Istruzioni fissa i confini entro cui la creatività può muoversi.</p>
+
+<!-- ═══ TEST DEL MATTONE ═══ -->
+<h3>🧱 Forzare il Pensiero Divergente</h3>
+<p style="font-size:.92rem;margin-bottom:14px">Test psicologico vero, anno 1967. Misura il pensiero laterale.</p>
+
+<div class="timer-box">
+    <div class="timer-label">A COSA SERVE UN MATTONE?</div>
+    <div class="timer-display" id="timer-display">2:00</div>
+    <div class="timer-label" id="timer-msg">Scrivete in chat Teams tutti gli usi alternativi che vi vengono in mente.</div>
+    <div style="margin-top:14px">
+        <button class="timer-btn" id="btn-start" onclick="startTimer()">▶ Avvia Timer</button>
+        <button class="timer-btn" id="btn-reset" onclick="resetTimer()">↺ Reset</button>
+    </div>
+</div>
+
+<p>Le risposte umane si raggruppano quasi sempre in un'unica categoria: "costruzione" (fermaporta, muri, pesi). L'AI fa la stessa cosa. Ma provate ad aggiungere un'<strong>Istruzione</strong>:<br>
+<em>"Trovane uno per ogni senso umano. Trovane uno astratto e poetico."</em><br>
+L'AI vi risponderà: Pigmento rosso per pittura. Strumento a percussione rustico. Superficie di stampa ruvida. L'idea geniale parte dal vostro prompt, non dalla macchina.</p>
+
+<button class="fustella-btn" onclick="goToPage(5)">Pagina 5 →</button>
+<button class="fustella-btn back" onclick="goToPage(3)">← Markdown</button>
+<div class="clear"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAG 5 — PROMPT BOOMER: BIAS E IMMAGINI
+     ════════════════════════════════════════════ -->
+<div id="p5" class="pg">
+<span class="pgn">05</span>
+<h2 style="background:var(--magenta);color:#fff">Hacking dell'Inclusione</h2>
+<p style="font-size:.88rem;color:#888;margin-bottom:10px">Smonta: <em>Il Prompt Boomer</em></p>
+
+<div class="rc">
+    <div class="rh">▲ 45k · u/SempreUguale · 10h fa</div>
+    <div class="rt">Le immagini AI sono tutte uguali. Modelli perfetti usciti da una pubblicità anni 2000.</div>
+</div>
+
+<p>Hai appena scoperto cos'è un <strong>Bias</strong> algoritmico. Come viene nutrita l'AI? Mangia i dati di internet. Cosa c'è su internet? Le pubblicità degli ultimi 30 anni, i film, le foto patinate e stereotipate. L'AI non è cattiva o sessista: è semplicemente lo specchio matematico dei pregiudizi storici della nostra società.</p>
+
+<p>L'inclusione <strong>costa parole</strong>. Se fate un prompt generico, la macchina vi restituirà il cliché. Se volete che il mondo generato rifletta il mondo reale, dovete sovrascrivere l'algoritmo usando decine di aggettivi precisi.</p>
+
+<div class="ex-box">
+    <div class="ex-header" style="background:var(--magenta)">📸 LA SFIDA VISIVA: IL CLICHÉ vs IL REALE</div>
+    <div class="ex-body" style="background:#fef0f0; border-bottom:1px solid #ccc">
+        <strong style="color:var(--coral)">❌ PROMPT 1 (Di Getto):</strong><br>
+        <em>"Genera un'immagine a figura intera di una persona, plus-size, con capelli corti e ricci, in uno skatepark."</em><br>
+        <span style="font-size:.85rem;color:#666">Risultato: riempie i vuoti con stereotipi (probabilmente farà una persona bianca caucasica e pesantemente truccata).</span>
+    </div>
+    <div class="ex-body" style="background:#f0fef0">
+        <strong style="color:var(--lime)">✅ PROMPT 2 (Dettagliato e Inclusivo):</strong><br>
+        "Genera un'immagine a figura intera di una persona <span class="hl-incl">androgina</span>, plus-size, con capelli corti e ricci e <span class="hl-incl">carnagione marrone chiaro</span>, che indossa <span class="hl-incl">pantaloni neri oversize</span> e una t-shirt bianca oversize con una stampa. Si trova in uno skatepark accanto a una halfpipe, <span class="hl-incl">guarda con sicurezza</span> verso la macchina fotografica. Fotografia professionale, in una calda giornata primaverile."
+    </div>
+</div>
+
+<div class="strillo" style="background:var(--magenta);color:#fff;margin-top:16px">
+    L'inclusione non è di default nell'algoritmo. La diversità va richiesta.
+    <br><small>— Dove Real Beauty Prompt Playbook</small>
+</div>
+
+<p>Chi tiene la telecamera decide chi esiste, diceva Pasolini nel 1964. Oggi la telecamera è il vostro prompt. <strong>Chi state inquadrando e chi state escludendo?</strong></p>
+
+<a href="https://www.youtube.com/watch?v=A5-kvHUcJw8" target="_blank" class="fl">Video: Comizi d'Amore, Pasolini (1964)</a>
+
+<button class="fustella-btn" onclick="goToPage(6)">Conclusione →</button>
+<button class="fustella-btn back" onclick="goToPage(4)">← Prompt</button>
+<div class="clear"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAG 6 — CHIUSURA
+     ════════════════════════════════════════════ -->
+<div id="p6" class="pg" style="text-align:center">
+<div class="aa" style="color:var(--magenta)">
+ ╔════════════════════════════════════════╗
+ ║  F I N E  D E L L ' E P I S O D I O  ║
+ ╚════════════════════════════════════════╝
+</div>
+
+<h2 style="font-size:clamp(1.6rem,5vw,2.8rem);margin-top:40px;background:none;border:none">
+    Il limite non è l'algoritmo.<br>È la nostra immaginazione.
+</h2>
+<p style="font-size:1.3rem;margin-top:18px;font-family:sans-serif">L'AI è un copilota fantastico, ma il pilota sei tu.</p>
+
+<div style="margin-top:50px;border-top:2px dashed #ccc;padding-top:18px">
+    <p><strong>Spoiler Episodio 2:</strong> <em>Coming Soon…</em></p>
+    <p style="font-size:.82rem;color:#888;margin-top:6px"><!-- INSERIRE: tema, data e piattaforma S2 --></p>
+</div>
+
+<button class="btn bk" onclick="go(5)">← Torna ai Bias</button>
+<button class="btn bk" onclick="go(1)" style="background:var(--yellow);color:var(--ink)">★ Archetipi</button>
+<div class="clr"></div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+/* ── Navigazione ── */
+function go(n){
+    document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+    document.getElementById('p'+n).classList.add('on');
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── Live Tokenizer Esimator (Approx length/4) ── */
+function countTokens() {
+    const text = document.getElementById('tok-input').value;
+    // Calcolo euristico: 1 token ≈ 4 chars in inglese/italiano. 
+    // +1 per evitare lo zero su stringhe vuote.
+    const tokens = text.length > 0 ? Math.ceil(text.length / 4) : 0;
+    document.getElementById('tok-display').textContent = tokens;
+}
+// Init al caricamento
+window.onload = function() {
+    countTokens();
+};
+
+/* ── Timer del Mattone ── */
+let timerInterval=null, timerSeconds=120;
+
+function updateTimerDisplay(){
+    const m=Math.floor(timerSeconds/60);
+    const s=timerSeconds%60;
+    document.getElementById('timer-display').textContent=m+':'+(s<10?'0':'')+s;
+}
+
+function startTimer(){
+    if(timerInterval) return;
+    const btn=document.getElementById('btn-start');
+    btn.classList.add('active');
+    btn.textContent='⏸ In corso…';
+    timerInterval=setInterval(()=>{
+        timerSeconds--;
+        updateTimerDisplay();
+        if(timerSeconds<=30){
+            document.getElementById('timer-display').style.color='#ff6b6b';
+        }
+        if(timerSeconds<=10){
+            document.getElementById('timer-display').style.fontSize='clamp(4rem,12vw,7rem)';
+        }
+        if(timerSeconds<=0){
+            clearInterval(timerInterval);
+            timerInterval=null;
+            document.getElementById('timer-display').textContent='⏰ TEMPO!';
+            document.getElementById('timer-display').style.color='#ff6b6b';
+            document.getElementById('timer-msg').innerHTML='<strong>Stop! Quante idee diverse avete scritto? Quante categorie?</strong>';
+            btn.textContent='✓ Finito';
+            btn.classList.remove('active');
+        }
+    },1000);
+}
+
+function resetTimer(){
+    clearInterval(timerInterval);
+    timerInterval=null;
+    timerSeconds=120;
+    updateTimerDisplay();
+    const d=document.getElementById('timer-display');
+    d.style.color='var(--yellow)';
+    d.style.fontSize='';
+    document.getElementById('timer-msg').innerHTML='Scrivete in chat Teams tutti gli usi alternativi che vi vengono in mente.';
+    const btn=document.getElementById('btn-start');
+    btn.textContent='▶ Avvia Timer';
+    btn.classList.remove('active');
+}
+</script>
+</body>
+</html>

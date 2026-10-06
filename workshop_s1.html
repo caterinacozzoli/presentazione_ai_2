@@ -173,19 +173,24 @@
 
         .quiz-w {
             background: rgba(255,255,255,0.95); border: 4px solid var(--border-dark); border-radius: 24px;
-            padding: 30px; box-shadow: 6px 6px 0 var(--border-dark);
+            padding: 24px; box-shadow: 6px 6px 0 var(--border-dark);
             margin-top: 10px;
         }
-        .qq { margin-bottom: 20px; }
-        .qq strong { font-size: 22px; display: block; margin-bottom: 8px; }
-        .qo-list { display: flex; flex-direction: column; gap: 8px; }
-        .qo {
-            background: #fff; border: 4px dotted var(--accent-magenta); border-radius: 30px;
-            padding: 8px 16px; cursor: pointer; transition: all 0.15s; font-weight: 700; font-size: 20px;
-            color: var(--text-primary); text-align: center;
+        .quiz-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;
         }
-        .qo:hover { transform: scale(1.02) rotate(-1deg); background: var(--accent-yellow); border-style: solid; }
-        .qo.sel  { background: var(--accent-magenta); color: #fff; border: 4px solid var(--border-dark); }
+        .q-box {
+            background: #fff; border: 3px solid var(--border-dark); border-radius: 12px;
+            padding: 12px; box-shadow: 4px 4px 0 var(--accent-magenta);
+        }
+        .q-box strong { font-size: 16px; line-height: 1.2; display: block; margin-bottom: 10px; }
+        .q-opt {
+            font-size: 14px; line-height: 1.3; margin-bottom: 6px; font-weight: 600;
+            display: flex; align-items: flex-start; gap: 6px; color: var(--text-body);
+        }
+        .q-opt::before {
+            content: "◯"; color: var(--accent-magenta); font-weight: bold; font-size: 16px;
+        }
 
         .cta {
             display: inline-block; background: var(--accent-magenta); color: #fff; border: 4px solid var(--border-dark);
@@ -278,34 +283,48 @@
 
             <!-- PAGE 2 (Quiz Destra) -->
             <div class="pf-page">
-                <div style="position:absolute; top:40px; right:40px;">
-                    <span class="sticker yellow" style="transform:rotate(6deg);">QUIZ TIME! 💖</span>
+                <div style="position:absolute; top:30px; right:30px;">
+                    <span class="sticker yellow" style="transform:rotate(6deg);">SCREENS & PEN! 🖍️</span>
                 </div>
                 <div class="quiz-w">
-                    <h2 style="font-size:36px;">TEST: Che AI sei?</h2>
-                    <p>Amavate i test delle riviste? Guardate le domande e segnatevi la lettera!</p>
+                    <h2 style="font-size:32px; margin-bottom: 5px;">TEST: Che AI sei?</h2>
+                    <p style="font-size: 18px; margin-bottom: 10px;">Prendi appunti: segna su un foglio quante A, B, C o D ottieni!</p>
                     
-                    <div class="qq">
-                        <strong>1. Quando esce un nuovo ChatGPT, pensi:</strong>
-                        <div class="qo-list">
-                            <div class="qo" onclick="pick(this)">A) "L'inizio della fine, ruberanno l'acqua."</div>
-                            <div class="qo" onclick="pick(this)">B) "Provato ma mi risponde a caso."</div>
-                            <div class="qo" onclick="pick(this)">C) "TL;DR bro, dimmelo in 10 sec."</div>
-                            <div class="qo" onclick="pick(this)">D) "Bello, ma genera sempre CEO bianchi."</div>
+                    <div class="quiz-grid">
+                        <div class="q-box">
+                            <strong>1. Quando esce un nuovo ChatGPT, pensi:</strong>
+                            <div class="q-opt">A) "Ci ruberanno l'acqua."</div>
+                            <div class="q-opt">B) "Provato, ma sbaglia."</div>
+                            <div class="q-opt">C) "Utile per i riassunti."</div>
+                            <div class="q-opt">D) "Solo CEO bianchi."</div>
+                        </div>
+                        <div class="q-box">
+                            <strong>2. Come scrivi il tuo "prompt"?</strong>
+                            <div class="q-opt">A) Meno lo uso, meno inquino.</div>
+                            <div class="q-opt">B) "Ciao, potresti aiutarmi?"</div>
+                            <div class="q-opt">C) "Fai un post con 3 emoji."</div>
+                            <div class="q-opt">D) Uso vincoli, ma è piatto.</div>
+                        </div>
+                        <div class="q-box">
+                            <strong>3. Se l'AI "allucina" (sbaglia):</strong>
+                            <div class="q-opt">A) Tecnologia disastrosa.</div>
+                            <div class="q-opt">B) Torno a usare Word.</div>
+                            <div class="q-opt">C) Non me ne accorgo, copio.</div>
+                            <div class="q-opt">D) Noto subito i suoi bias.</div>
+                        </div>
+                        <div class="q-box">
+                            <strong>4. Generazione immagini:</strong>
+                            <div class="q-opt">A) Spreco enorme di server.</div>
+                            <div class="q-opt">B) Sbaglia sempre le mani.</div>
+                            <div class="q-opt">C) Ottimo per fare meme.</div>
+                            <div class="q-opt">D) Produce modelle finte.</div>
                         </div>
                     </div>
-                    <div class="qq">
-                        <strong>2. Come scrivi il tuo "prompt"?</strong>
-                        <div class="qo-list">
-                            <div class="qo" onclick="pick(this)">A) Non lo scrivo. Costa energia.</div>
-                            <div class="qo" onclick="pick(this)">B) "Ciao scusa, potresti aiutarmi? TVB."</div>
-                            <div class="qo" onclick="pick(this)">C) "Riassumi max 10 parole."</div>
-                            <div class="qo" onclick="pick(this)">D) Vincoli complessi, ma resta piatto.</div>
-                        </div>
-                    </div>
                     
-                    <p style="font-style:italic; font-weight:700; color:var(--accent-magenta); margin-top:10px; margin-bottom:5px;">Maggioranza di A, B, C o D? Scrivilo in chat!</p>
-                    <button class="cta" onclick="pf.flipNext()">VAI AI RISULTATI →</button>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+                        <p style="font-style:italic; font-weight:700; color:var(--accent-magenta); margin:0; font-size:18px;">Hai contato le lettere? Scrivilo in chat!</p>
+                        <button class="cta" onclick="pf.flipNext()" style="margin:0; font-size: 20px; padding: 6px 16px;">RISULTATI →</button>
+                    </div>
                 </div>
             </div>
 
@@ -330,7 +349,7 @@
                     <p>Il problema non è lo strumento, è come gli parlate. Il segreto per salvare il pianeta è mettere l'AI a <strong>dieta di Token</strong>.</p>
                 </div>
 
-                <div class="puzzle-corner" style="bottom:40px; left:40px;">
+                <div class="puzzle-corner" style="bottom:40px; right:40px;">
                     <div class="puzzle-label">🧩 CRUCIVERBA</div>
                     <div class="mcw">
                         <input type="text" maxlength="1" data-answer="T">
@@ -402,7 +421,7 @@
                     ⚠️ NOTA DI SICUREZZA: Non mettete dati aziendali riservati in convertitori online gratuiti. Non siate <em>quegli</em> analogici.
                 </div>
 
-                <div class="puzzle-corner" style="bottom:40px; right:40px;">
+                <div class="puzzle-corner" style="bottom:40px; left:40px;">
                     <div class="compl">
                         <div class="puzzle-label">🧩 COMPLETA</div>
                         <p style="font-size:16px; margin-bottom:10px;">Gli **asterischi doppi** creano il <input type="text" placeholder="?"></p>
@@ -441,7 +460,7 @@
                     </div>
                 </div>
                 
-                <div class="puzzle-corner" style="bottom:40px; left:40px;">
+                <div class="puzzle-corner" style="bottom:40px; right:40px;">
                     <div>
                         <div class="puzzle-label">🧩 L'INTRUSO</div>
                         <div class="intruso-wrap">
@@ -458,22 +477,25 @@
             <!-- PAGE 8 (Ci provo Destra) -->
             <div class="pf-page">
                 <div class="torn" style="background:#fff4e6; border-color:var(--accent-yellow);">
-                    <h3 style="color:var(--text-primary); border-bottom:3px solid var(--accent-yellow); padding-bottom:10px; margin-bottom:20px;">🧱 IL TEST DEL MATTONE (1967)</h3>
-                    <p><strong>Timer 2 min.</strong> Scrivete in chat tutti gli usi alternativi che vi vengono in mente per un MATTONE. Via!</p>
+                    <h3 style="color:var(--text-primary); border-bottom:3px solid var(--accent-yellow); padding-bottom:10px; margin-bottom:15px;">🧱 IL TEST DEL MATTONE (Guilford, 1967)</h3>
                     
-                    <div style="background:#fff; padding:16px; border-radius:10px; border:3px dashed var(--border-dark); margin:20px 0;">
-                        <p>👤 <strong>Umani / Prompt Base AI:</strong><br>
-                        Costruire muri, usare come peso, usare come fermaporta.<br>
-                        <span style="color:var(--accent-violet); font-size:18px; font-weight:700;">(CONVERGENZA)</span></p>
+                    <p style="font-size:20px; margin-bottom:15px; line-height:1.4;">L'<strong>Alternative Uses Test (AUT)</strong> misura il pensiero divergente valutando 4 parametri: <span style="color:var(--accent-magenta); font-weight:700;">Fluenza, Flessibilità, Originalità, Elaborazione</span>.</p>
+                    
+                    <div style="background:#fff; border:3px solid var(--border-dark); padding:15px; border-radius:10px; margin-bottom:20px; transform:rotate(1deg);">
+                        <p style="font-size:22px; font-weight:800; color:var(--text-primary); text-align:center; margin:0; line-height:1.3;">"Elenca tutti gli utilizzi alternativi e insoliti che riesci a immaginare per un mattone, che non siano la costruzione di un muro."</p>
                     </div>
                     
-                    <div style="background:var(--accent-pink-lt); padding:16px; border-radius:10px; border:3px solid var(--accent-magenta);">
-                        <p style="margin-bottom:10px;">🤖 <strong>Prompt NERD (Pensiero Laterale estremo):</strong><br>
-                        Pigmento rosso da triturare, strumento a percussione acustica, spugna termica per calore.<br>
-                        <span style="color:var(--accent-magenta); font-size:18px; font-weight:700;">(DIVERGENZA)</span></p>
+                    <div style="background:#fff; padding:15px; border-radius:10px; border:3px dashed var(--border-dark); margin-bottom:15px;">
+                        <p style="margin:0; font-size:20px;">👤 <strong>Risposta Base:</strong><br>
+                        Fermaporta, fermacarte, ferma-finestra.<br>
+                        <span style="color:var(--accent-violet); font-size:18px; font-weight:700;">→ (Bassa Flessibilità: tutti della categoria "peso")</span></p>
                     </div>
                     
-                    <p style="margin-top:20px; font-weight:800; text-align:center;">Chi ha avuto l'idea geniale, l'AI o voi che avete scritto il prompt giusto?</p>
+                    <div style="background:var(--accent-pink-lt); padding:15px; border-radius:10px; border:3px solid var(--accent-magenta);">
+                        <p style="margin:0; font-size:20px;">🤖 <strong>Risposta Divergente:</strong><br>
+                        Polvere per dipingere, gessetto ruvido, arma di difesa.<br>
+                        <span style="color:var(--accent-magenta); font-size:18px; font-weight:700;">→ (Alta Originalità & Flessibilità categoriale)</span></p>
+                    </div>
                 </div>
             </div>
 
